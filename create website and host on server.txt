@@ -1,0 +1,20 @@
+1) make ec2 instance with ubuntu ami
+2)make security group with ssh and http
+3)connect to ec2 instance 
+4)sudo apt update
+sudo apt install apache2 -y
+
+5)sudo systemctl start apache2
+6)cd /var/www/html
+7)sudo nano index.html
+8) add code to index.html accd to you 
+<html>
+<h1>Hello from AWS EC2</h1>
+</html>
+
+ctrl+x
+y
+enter
+ctrl +x
+
+access the website using public ip
