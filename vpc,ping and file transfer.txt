@@ -1,0 +1,177 @@
+1️⃣ Create Virtual Network (VPC)
+
+Open AWS Console.
+
+Go to VPC → Create VPC.
+
+Select:
+
+VPC only
+
+Configure:
+
+Name: LabVPC
+IPv4 CIDR block: 10.0.0.0/16
+
+Click Create VPC.
+
+This creates the virtual network.
+
+2️⃣ Create Subnet
+
+Go to VPC → Subnets → Create Subnet.
+
+Select the VPC:
+
+LabVPC
+
+Configure:
+
+Subnet name: LabSubnet
+Availability zone: any
+IPv4 CIDR block: 10.0.1.0/24
+
+Click Create Subnet.
+
+3️⃣ Create Internet Gateway
+
+Go to VPC → Internet Gateways → Create Internet Gateway.
+
+Configure:
+
+Name: LabIGW
+
+Click Create.
+
+Attach gateway:
+
+Actions → Attach to VPC → LabVPC
+
+This enables internet access.
+
+4️⃣ Create Route Table
+
+Go to VPC → Route Tables → Create Route Table.
+
+Configure:
+
+Name: LabRouteTable
+VPC: LabVPC
+
+Click Create.
+
+Open the route table → Routes → Edit Routes.
+
+Add:
+
+Destination: 0.0.0.0/0
+Target: Internet Gateway (LabIGW)
+
+Save.
+
+5️⃣ Associate Route Table With Subnet
+
+Open LabRouteTable.
+
+Go to Subnet Associations.
+
+Click Edit subnet associations.
+
+Select:
+
+LabSubnet
+
+Click Save associations.
+
+6️⃣ Enable Auto Assign Public IP
+
+Go to VPC → Subnets.
+
+Select LabSubnet.
+
+Click:
+
+Actions → Edit subnet settings
+
+Enable:
+
+Auto-assign public IPv4 address
+
+Click Save.
+
+7️⃣ Launch Two EC2 Instances
+
+Go to EC2 → Launch Instance.
+
+Launch two instances:
+
+testserver-1
+testserver-2
+
+Configure network:
+
+Network: LabVPC
+Subnet: LabSubnet
+Auto assign public IP: Enable
+8️⃣ Configure Security Group
+
+Edit inbound rules and add:
+
+SSH → Port 22 → 0.0.0.0/0
+All ICMP - IPv4 → 0.0.0.0/0
+Custom TCP → Port 8000 → 0.0.0.0/0
+
+ICMP is used for ping.
+Port 8000 is used for file transfer.
+
+9️⃣ Connect to Instances
+
+Use EC2 Instance Connect to open terminal for both instances.
+
+🔟 Test Communication Using Ping
+
+From testserver-1 run:
+
+ping <private-ip-of-testserver-2>
+
+Example:
+
+ping 10.0.1.174
+
+Successful replies confirm that the nodes communicate within the VPC.
+
+1️⃣1️⃣ Transfer File Between Nodes
+On testserver-2 (sender)
+
+Start a temporary HTTP server:
+
+python3 -m http.server 8000
+On testserver-1 (receiver)
+
+Download the file:
+
+wget http://10.0.1.174:8000/h1.txt
+
+(Replace IP with the private IP of the sender node.)
+
+1️⃣2️⃣ Verify File Transfer
+
+Check the downloaded file:
+
+ls
+cat h1.txt
+
+If the content appears, the file transfer is successful.
+
+Result
+
+Two EC2 instances communicate and transfer a file within the virtual network created using Amazon VPC.
+
+testserver-2 (10.0.1.174)
+        │
+        │ File transfer
+        ▼
+testserver-1 (10.0.1.221)
+
+✅ Outcome:
+Virtual network created and communication between nodes verified through ping and file transfer.
