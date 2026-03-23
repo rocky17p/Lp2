@@ -1,87 +1,72 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int dx[4] = {1, -1, 0, 0};
-int dy[4] = {0, 0, 1, -1};
+int dx[] = {1, -1, 0, 0};
+int dy[] = {0, 0, 1, -1};
 
-int heuristic(int x1, int y1, int x2, int y2) {
-    return abs(x1 - x2) + abs(y1 - y2); // Manhattan distance
+// Manhattan Distance
+int h(int x, int y, int gx, int gy) {
+    return abs(x - gx) + abs(y - gy);
 }
 
-bool isValid(int x, int y, vector<vector<int>>& grid) {
-    int n = grid.size();
-    int m = grid[0].size();
-    return x >= 0 && y >= 0 && x < n && y < m && grid[x][y] == 0;
+bool valid(int x, int y, vector<vector<int>>& g) {
+    return x >= 0 && y >= 0 &&
+           x < g.size() && y < g[0].size() &&
+           g[x][y] == 0;
 }
 
-void printPath(vector<vector<pair<int,int>>>& parent,
-               pair<int,int> start,
-               pair<int,int> goal) {
+void AStar(vector<vector<int>>& grid, pair<int,int> s, pair<int,int> g) {
 
-    vector<pair<int,int>> path;
-    pair<int,int> cur = goal;
+    int n = grid.size(), m = grid[0].size();
 
-    while (cur != start) {
-        path.push_back(cur);
-        cur = parent[cur.first][cur.second];
-    }
-    path.push_back(start);
-
-    reverse(path.begin(), path.end());
-
-    cout << "Path:\n";
-    for (auto &p : path)
-        cout << "(" << p.first << "," << p.second << ") ";
-}
-
-void AStar(vector<vector<int>>& grid,
-           pair<int,int> start,
-           pair<int,int> goal) {
-
-    int n = grid.size();
-    int m = grid[0].size();
-
-    vector<vector<int>> gCost(n, vector<int>(m, INT_MAX));
+    vector<vector<int>> cost(n, vector<int>(m, INT_MAX));
     vector<vector<pair<int,int>>> parent(n, vector<pair<int,int>>(m));
 
-    // (f, g, x, y)
-    priority_queue<tuple<int,int,int,int>,
-                   vector<tuple<int,int,int,int>>,
-                   greater<>> pq;
+    priority_queue<tuple<int,int,int>, vector<tuple<int,int,int>>, greater<>> pq;
+    // (f, x, y)
 
-    gCost[start.first][start.second] = 0;
-    pq.push({heuristic(start.first, start.second, goal.first, goal.second),
-             0, start.first, start.second});
+    cost[s.first][s.second] = 0;
+    pq.push({h(s.first, s.second, g.first, g.second), s.first, s.second});
 
     while (!pq.empty()) {
-        auto [f, g, x, y] = pq.top();
+        auto [f, x, y] = pq.top();
         pq.pop();
 
-        if (make_pair(x, y) == goal) {
-            cout << "Goal reached!\n";
-            printPath(parent, start, goal);
+        if (make_pair(x, y) == g) {
+            cout << "Path:\n";
+            vector<pair<int,int>> path;
+
+            while (make_pair(x, y) != s) {
+                path.push_back({x, y});
+                tie(x, y) = parent[x][y];
+            }
+            path.push_back(s);
+            reverse(path.begin(), path.end());
+
+            for (auto p : path)
+                cout << "(" << p.first << "," << p.second << ") ";
+
             return;
         }
 
         for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+            int nx = x + dx[i], ny = y + dy[i];
 
-            if (isValid(nx, ny, grid)) {
-                int newG = g + 1;
+            if (valid(nx, ny, grid)) {
+                int newCost = cost[x][y] + 1;
 
-                if (newG < gCost[nx][ny]) {
-                    gCost[nx][ny] = newG;
+                if (newCost < cost[nx][ny]) {
+                    cost[nx][ny] = newCost;
                     parent[nx][ny] = {x, y};
 
-                    int h = heuristic(nx, ny, goal.first, goal.second);
-                    pq.push({newG + h, newG, nx, ny});
+                    int fVal = newCost + h(nx, ny, g.first, g.second);
+                    pq.push({fVal, nx, ny});
                 }
             }
         }
     }
 
-    cout << "No path found!\n";
+    cout << "No path found\n";
 }
 
 int main() {
@@ -92,9 +77,5 @@ int main() {
         {0, 0, 0, 0}
     };
 
-    pair<int,int> start = {0, 0};
-    pair<int,int> goal  = {3, 2};
-
-    AStar(grid, start, goal);
+    AStar(grid, {0,0}, {3,2});
 }
-
