@@ -18,7 +18,7 @@ int main() {
         }
 
         if (input == "exit") {
-            cout << "Bot: Thank you! Stay healthy 😊\n";
+            cout << "Bot: Thank you! Stay healthy \n";
             break;
         }
 
