@@ -1,0 +1,42 @@
+✅ Full Steps: Static Website on Cloud VM
+🔹 1. Create EC2 Instance
+Go to Amazon Web Services
+Open EC2
+Click Launch Instance
+Select:
+Ubuntu OS
+t2.micro
+Create/download key pair (optional if using EC2 Connect)
+Launch instance
+🔹 2. Configure Security Group
+
+Add Inbound Rules:
+
+SSH (Port 22) → Anywhere
+HTTP (Port 80) → Anywhere
+🔹 3. Connect to Instance
+Select instance
+Click Connect → EC2 Instance Connect → Connect
+Opens browser terminal
+🔹 4. Install & Start Web Server
+sudo apt update
+sudo apt install apache2 -y
+sudo systemctl start apache2
+sudo systemctl enable apache2
+🔹 5. Deploy Website
+cd /var/www/html
+sudo nano index.html
+Paste your HTML code
+Save:
+CTRL + O → Enter
+CTRL + X
+🔹 6. Access Website
+Copy Public IP of instance
+Open in browser:
+http://your-public-ip
+🔹 7. Remote Update (Important Point)
+Connect again using EC2 Instance Connect
+Run:
+cd /var/www/html
+sudo nano index.html
+Edit and save → changes reflect immediately
