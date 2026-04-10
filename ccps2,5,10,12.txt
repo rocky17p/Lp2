@@ -8,10 +8,6 @@ testserver-1
 testserver-2
 
 Configure network:
-
-Network: LabVPC
-Subnet: LabSubnet
-Auto assign public IP: Enable
 8️⃣ Configure Security Group
 
 Edit inbound rules and add:
