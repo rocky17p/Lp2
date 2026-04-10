@@ -1,0 +1,119 @@
+✅ Assignment 16
+Student Record Management System using Apex + Visualforce
+🔹 Step 1: Login to Salesforce
+Go to Salesforce Developer Edition
+Enter username and password
+Open dashboard
+🔹 Step 2: Create Custom Object
+Go to Setup
+Click Object Manager
+Click Create → Custom Object
+
+Fill details:
+
+Label: Student11
+Object Name: Student11__c
+
+Click Save
+
+🔹 Step 3: Create Required Fields
+
+Go to:
+👉 Student11 → Fields & Relationships → New
+
+Create following fields:
+
+1. Roll No
+Data Type: Number
+Field Name: Roll_No__c
+2. Class
+Data Type: Text
+Field Name: Class__c
+3. Mobile No
+Data Type: Phone
+Field Name: Mobile_No__c
+
+✔ Default field:
+
+Name (already present)
+🔹 Step 4: Create Apex Controller
+
+Go to:
+👉 Setup → Apex Classes → New
+
+Paste this code:
+
+public class Student11Controller {
+
+    public String name {get; set;}
+    public Integer roll {get; set;}
+    public String cls {get; set;}
+    public String mobile {get; set;}
+    public String message {get; set;}
+
+    public void saveStudent() {
+        Student11__c s = new Student11__c();
+        s.Name = name;
+        s.Roll_No__c = roll;
+        s.Class__c = cls;
+        s.Mobile_No__c = mobile;
+        insert s;
+
+        message = 'Record Saved Successfully!';
+    }
+
+    public List<Student11__c> getStudents() {
+        return [SELECT Name, Roll_No__c, Class__c, Mobile_No__c FROM Student11__c];
+    }
+}
+
+Click Save
+
+🔹 Step 5: Create Visualforce Page
+
+Go to:
+👉 Setup → Visualforce Pages → New
+
+Paste this:
+
+<apex:page controller="Student11Controller">
+    <apex:form>
+
+        <apex:pageBlock title="Student Record Form">
+
+            <apex:pageBlockSection columns="1">
+
+                <apex:inputText value="{!name}" label="Name"/>
+                <apex:inputText value="{!roll}" label="Roll No"/>
+                <apex:inputText value="{!cls}" label="Class"/>
+                <apex:inputText value="{!mobile}" label="Mobile No"/>
+
+            </apex:pageBlockSection>
+
+            <apex:commandButton value="Save" action="{!saveStudent}"/>
+
+            <br/><br/>
+            <apex:outputText value="{!message}" style="color:green;"/>
+
+        </apex:pageBlock>
+
+    </apex:form>
+</apex:page>
+
+Click Save
+
+🔹 Step 6: Run the Application
+Click Preview on Visualforce page
+Enter:
+Name
+Roll No
+Class
+Mobile No
+Click Save
+🔹 Step 7: Verify Output
+After clicking save:
+Message appears: Record Saved Successfully
+Go to:
+👉 App Launcher → Student11
+Check:
+Record is stored
