@@ -19,10 +19,9 @@ EC2 Instance Connect (browser terminal)
 sudo apt update
 sudo apt install npm -y
 
-git clone https://github.com/pushkarpawar01/task-management-system.git
+git clone https://github.com/rocky17p/todo.git
 
-cd task-management-system
-cd task-management-system
+cd todo
 
 cd server
 npm install
@@ -30,8 +29,7 @@ sudo nano .env
 npm run dev
 Open second terminal of the same EC2 instance using:
 EC2 Instance Connect
-cd task-management-system
-cd task-management-system
+cd todo
 
 cd client
 npm install
