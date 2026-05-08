@@ -1,0 +1,38 @@
+Launch EC2 Instance
+
+Name: task-manager
+AMI: Ubuntu Server
+Instance Type: t3.micro
+Key Pair: create/select key pair
+
+Security Group Inbound Rules:
+SSH → 22
+HTTP → 80
+Custom TCP → 5000
+Custom TCP → 5173
+
+Source:
+0.0.0.0/0
+
+Connect using:
+EC2 Instance Connect (browser terminal)
+sudo apt update
+sudo apt install npm -y
+
+git clone https://github.com/pushkarpawar01/task-management-system.git
+
+cd task-management-system
+cd task-management-system
+
+cd server
+npm install
+sudo nano .env
+npm run dev
+Open second terminal of the same EC2 instance using:
+EC2 Instance Connect
+cd task-management-system
+cd task-management-system
+
+cd client
+npm install
+npm run dev -- --host 0.0.0.0
