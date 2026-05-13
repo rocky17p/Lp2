@@ -1,0 +1,122 @@
+✅ Step 1: Create Custom Object
+Go to:
+
+Setup → Object Manager → Create → Custom Object
+
+Fill:
+
+Label → Customer
+
+Plural Label → Customers
+
+Object Name → Customer
+
+Record Name → Customer Name
+
+Click Save
+
+👉 Name field is created automatically
+
+✅ Step 2: Create Custom Fields
+Create these fields:
+
+Field Label	Data Type
+CustomerID	Number
+Email	Email
+BirthDate	Date
+Department	Text
+✅ Step 3: Create Apex Class
+Go to:
+
+Setup → Apex Classes → New
+
+Paste this:
+
+public class BankAccountSystem {
+
+    // Insert
+    public static void insertCustomer() {
+        Customer__c c = new Customer__c(
+            Name = 'Rishi Patwa',
+            CustomerID__c = 101,
+            Email__c = 'rishi@gmail.com',
+            BirthDate__c = Date.newInstance(2004,5,10),
+            Department__c = 'Finance'
+        );
+
+        insert c;
+        System.debug('Customer Inserted');
+    }
+
+    // View
+    public static void viewCustomers() {
+        List<Customer__c> listCust = [
+            SELECT Name, CustomerID__c, Email__c, BirthDate__c, Department__c
+            FROM Customer__c
+        ];
+
+        for(Customer__c c : listCust) {
+            System.debug(
+                c.Name + ' | ' +
+                c.CustomerID__c + ' | ' +
+                c.Email__c + ' | ' +
+                c.Department__c
+            );
+        }
+    }
+
+    // Delete
+    public static void deleteCustomer() {
+        Customer__c c = [
+            SELECT Id FROM Customer__c LIMIT 1
+        ];
+
+        delete c;
+        System.debug('Customer Deleted');
+    }
+
+    // Menu Driven
+    public static void menu(Integer choice) {
+
+        switch on choice {
+
+            when 1 {
+                insertCustomer();
+            }
+
+            when 2 {
+                viewCustomers();
+            }
+
+            when 3 {
+                deleteCustomer();
+            }
+
+            when else {
+                System.debug('Invalid Choice');
+            }
+        }
+    }
+}
+Click Save
+
+✅ Step 4: Run the Program
+Go to:
+
+Developer Console → Debug → Execute Anonymous
+
+Run:
+
+BankAccountSystem.menu(1); // Insert
+BankAccountSystem.menu(2); // View
+BankAccountSystem.menu(3); // Delete
+✅ Step 5: View Records (Correct Way)
+Go to:
+
+Query Editor
+
+Run:
+
+SELECT Id, Name, CustomerID__c, Email__c, BirthDate__c, Department__c
+FROM Customer__c
+Click Execute
