@@ -1,0 +1,134 @@
+Step 1: Create Custom Object
+
+Go to:
+
+Setup → Object Manager → Create → Custom Object
+
+Fill:
+
+Label: Product
+Plural Label: Products
+Object Name: Product
+Record Name: Product Name
+
+Click Save
+
+Salesforce automatically creates the Name field, so do NOT create Product Name separately.
+
+Step 2: Create Custom Fields
+
+Create these 3 fields:
+
+Field Label	Data Type
+SerialNo	Number
+ManufactureDate	Date
+ExpiryDate	Date
+
+Click Save for each field.
+
+Step 3: Create Apex Class
+
+Go to:
+
+Setup → Apex Classes → New
+
+Paste this code:
+public class ProductController {
+
+    public Product__c p {get; set;}
+
+    public ProductController() {
+        p = new Product__c();
+    }
+
+    public List<Product__c> getProducts() {
+        return [
+            SELECT Id, Name, SerialNo__c,
+                   ManufactureDate__c, ExpiryDate__c
+            FROM Product__c
+        ];
+    }
+
+    public void saveProduct() {
+        insert p;
+        p = new Product__c();
+    }
+
+    public void deleteProduct() {
+        delete [
+            SELECT Id
+            FROM Product__c
+            WHERE Id = :ApexPages.currentPage()
+                .getParameters().get('id')
+        ];
+    }
+}
+
+Click Save
+
+Step 4: Create Visualforce Page
+
+Go to:
+
+Setup → Visualforce Pages → New
+
+Page Name:ProductRecord
+
+<apex:page controller="ProductController">
+    <apex:form>
+
+        <apex:pageBlock title="Product Inventory Management">
+
+            <apex:pageBlockSection columns="1">
+
+                <apex:inputField value="{!p.Name}"/>
+                <apex:inputField value="{!p.SerialNo__c}"/>
+                <apex:inputField value="{!p.ManufactureDate__c}"/>
+                <apex:inputField value="{!p.ExpiryDate__c}"/>
+
+                <apex:commandButton 
+                    value="Save"
+                    action="{!saveProduct}"
+                    rerender="t"/>
+
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+
+        <apex:pageBlock title="Product Records" id="t">
+
+            <apex:pageBlockTable value="{!products}" var="x">
+
+                <apex:column value="{!x.Name}" headerValue="Product Name"/>
+                <apex:column value="{!x.SerialNo__c}" headerValue="Serial No"/>
+                <apex:column value="{!x.ManufactureDate__c}" headerValue="Manufacture Date"/>
+                <apex:column value="{!x.ExpiryDate__c}" headerValue="Expiry Date"/>
+
+                <apex:column headerValue="Action">
+
+                    <apex:commandLink 
+                        value="Delete"
+                        action="{!deleteProduct}"
+                        rerender="t">
+
+                        <apex:param 
+                            name="id"
+                            value="{!x.Id}"/>
+
+                    </apex:commandLink>
+
+                </apex:column>
+
+            </apex:pageBlockTable>
+
+        </apex:pageBlock>
+
+    </apex:form>
+</apex:page>
+Click Save
+
+Step 5: Run the Page
+
+Click:
+
+Preview
