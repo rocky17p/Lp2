@@ -1,0 +1,54 @@
+✅ Step 1: No Object Required
+👉 This assignment does NOT need any custom object
+
+✅ Step 2: Create Apex Class
+Go to:
+
+Setup → Apex Classes → New
+
+public class EmailNotificationSystem {
+
+    public static void sendEmailWithAttachment() {
+
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+
+        mail.setToAddresses(new String[] {'receiver@gmail.com'});
+        mail.setSubject('Email with Attachment');
+        mail.setPlainTextBody('Please find the attachment.');
+
+        // Create Attachment
+        Messaging.EmailFileAttachment attach = new Messaging.EmailFileAttachment();
+        attach.setFileName('TestFile.txt');
+        attach.setBody(Blob.valueOf('This is a sample attachment file.'));
+        attach.setContentType('text/plain');
+
+        mail.setFileAttachments(new Messaging.EmailFileAttachment[] {attach});
+
+        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+
+        System.debug('Email with Attachment Sent');
+    }
+    public static void sendEmail() {
+
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+
+        mail.setToAddresses(new String[] {'receiver@gmail.com'});
+        mail.setSubject('Test Email from Salesforce');
+        mail.setPlainTextBody('Hello, this is a test email sent using Apex.');
+
+        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+
+        System.debug('Email Sent Successfully');
+    }
+}
+Click Save
+
+✅ Step 3: Run the Program
+Go to:
+
+Developer Console → Debug → Execute Anonymous
+
+Run Without Attachment
+EmailNotificationSystem.sendEmail();
+Run With Attachment
+EmailNotificationSystem.sendEmailWithAttachment();
