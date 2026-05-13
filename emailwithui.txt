@@ -1,0 +1,105 @@
+✅ Step 1: Create Apex Class
+Go to: Setup → Apex Classes → New
+
+public class EmailController {
+
+    public String toEmail {get; set;}
+    public String subject {get; set;}
+    public String body {get; set;}
+
+    // Send Email without attachment
+    public void sendEmail() {
+
+        if(toEmail == null || !toEmail.contains('@')) {
+            ApexPages.addMessage(
+                new ApexPages.Message(ApexPages.Severity.ERROR, 'Invalid Email ID')
+            );
+            return;
+        }
+
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+
+        mail.setToAddresses(new String[] {toEmail});
+        mail.setSubject(subject);
+        mail.setPlainTextBody(body);
+
+        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+
+        ApexPages.addMessage(
+            new ApexPages.Message(ApexPages.Severity.CONFIRM, 'Email Sent Successfully')
+        );
+    }
+
+    // Send Email with attachment
+    public void sendEmailWithAttachment() {
+
+        if(toEmail == null || !toEmail.contains('@')) {
+            ApexPages.addMessage(
+                new ApexPages.Message(ApexPages.Severity.ERROR, 'Invalid Email ID')
+            );
+            return;
+        }
+
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+
+        mail.setToAddresses(new String[] {toEmail});
+        mail.setSubject(subject);
+        mail.setPlainTextBody(body);
+
+        Messaging.EmailFileAttachment attach = new Messaging.EmailFileAttachment();
+        attach.setFileName('Sample.txt');
+        attach.setBody(Blob.valueOf('This is attachment file'));
+        attach.setContentType('text/plain');
+
+        mail.setFileAttachments(new Messaging.EmailFileAttachment[] {attach});
+
+        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+
+        ApexPages.addMessage(
+            new ApexPages.Message(ApexPages.Severity.CONFIRM, 'Email with Attachment Sent')
+        );
+    }
+}
+✅ Step 2: Create Visualforce Page
+Go to: Setup → Visualforce Pages → New
+
+<apex:page controller="EmailController">
+    <apex:form>
+
+        <apex:pageMessages />
+
+        <apex:pageBlock title="Email Notification System">
+
+            <apex:pageBlockSection columns="1">
+
+                <apex:inputText value="{!toEmail}" label="Recipient Email"/>
+                <apex:inputText value="{!subject}" label="Subject"/>
+                <apex:inputTextarea value="{!body}" label="Message Body"/>
+
+                <apex:commandButton value="Send Email"
+                    action="{!sendEmail}"/>
+
+                <apex:commandButton value="Send With Attachment"
+                    action="{!sendEmailWithAttachment}"/>
+
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+
+    </apex:form>
+</apex:page>
+✅ Step 3: Enable Email (IMPORTANT)
+Go to:
+
+Setup → Deliverability
+
+Set:
+
+Access Level = All Email
+✅ Step 4: Run Page
+Click:
+
+Preview
+or open:
+
+/apex/YourPageName
