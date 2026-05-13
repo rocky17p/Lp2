@@ -1,45 +1,91 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
+int getInput(string question) {
+    int x;
+
+    while (true) {
+        cout << question;
+        cin >> x;
+
+        if (x >= 1 && x <= 5)
+            return x;
+
+        cout << "Enter value between 1 and 5\n";
+    }
+}
+
+string getRating(double score) {
+    if (score >= 90)
+        return "Outstanding";
+    else if (score >= 80)
+        return "Excellent";
+    else if (score >= 70)
+        return "Very Good";
+    else if (score >= 60)
+        return "Good";
+    else if (score >= 50)
+        return "Average";
+    else
+        return "Needs Improvement";
+}
+
 int main() {
-    int fever, cough, headache, cold;
+    cout << "EMPLOYEE PERFORMANCE EXPERT SYSTEM\n";
 
-    cout << "===== CITY HOSPITAL EXPERT SYSTEM =====\n";
+    int n;
+    cout << "Enter number of employees: ";
+    cin >> n;
 
-    cout << "Do you have fever? (1-Yes / 0-No): ";
-    cin >> fever;
+    for (int i = 1; i <= n; i++) {
+        cout << "\nEmployee " << i << endl;
 
-    cout << "Do you have cough? (1-Yes / 0-No): ";
-    cin >> cough;
+        int productivity = getInput("Productivity (1-5): ");
+        int quality = getInput("Quality of Work (1-5): ");
+        int teamwork = getInput("Teamwork (1-5): ");
+        int attendance = getInput("Attendance (1-5): ");
+        int initiative = getInput("Initiative (1-5): ");
 
-    cout << "Do you have headache? (1-Yes / 0-No): ";
-    cin >> headache;
+        double score =
+            productivity * 0.30 +
+            quality * 0.25 +
+            teamwork * 0.20 +
+            attendance * 0.15 +
+            initiative * 0.10;
 
-    cout << "Do you have cold/runny nose? (1-Yes / 0-No): ";
-    cin >> cold;
+        score = score * 20;
 
-    cout << "\n--- RESULT ---\n";
+        // Expert Rules
+        if (attendance == 5)
+            score += 3;
 
-    // 🔹 Conditions
-    if (fever == 1 && cough == 1 && cold == 1) {
-        cout << "Possible Illness: FLU\n";
-        cout << "Advice: Take rest, drink warm fluids, consult doctor.\n";
-    }
-    else if (fever == 1 && headache == 1 && cough == 0) {
-        cout << "Possible Illness: FEVER\n";
-        cout << "Advice: Take paracetamol, rest, drink water.\n";
-    }
-    else if (cold == 1 && cough == 1 && fever == 0) {
-        cout << "Possible Illness: COMMON COLD\n";
-        cout << "Advice: Take steam, warm drinks, rest.\n";
-    }
-    else if (headache == 1 && fever == 0 && cough == 0) {
-        cout << "Possible Illness: STRESS / HEADACHE\n";
-        cout << "Advice: Take rest, reduce screen time.\n";
-    }
-    else {
-        cout << "Condition unclear.\n";
-        cout << "Advice: Please consult a doctor.\n";
+        if (teamwork <= 2)
+            score -= 5;
+
+        if (productivity >= 4 && quality >= 4)
+            score += 5;
+
+        if (initiative <= 2)
+            score -= 3;
+
+        if (score > 100)
+            score = 100;
+
+        if (score < 0)
+            score = 0;
+
+        cout << "\nFinal Score: " << score << "%\n";
+        cout << "Rating: " << getRating(score) << endl;
+
+        cout << "Advice: ";
+        if (score >= 90)
+            cout << "Promotion Recommended\n";
+        else if (score >= 70)
+            cout << "Eligible for Bonus\n";
+        else if (score >= 50)
+            cout << "Needs Improvement\n";
+        else
+            cout << "Training Required\n";
     }
 
     return 0;
