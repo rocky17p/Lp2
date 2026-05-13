@@ -1,0 +1,118 @@
+✅ Step 1: Create Custom Object
+Go to:
+
+Setup → Object Manager → Create → Custom Object
+
+Fill:
+
+Label → Employee
+
+Plural Label → Employees
+
+Object Name → Employee
+
+Record Name → Employee Name
+
+Click Save
+
+✅ Step 2: Create Custom Fields
+Create these fields:
+
+Field	Type
+EmpID	Number
+Email	Email
+BirthDate	Date
+Department	Text
+👉 Do NOT create Name field (already exists)
+
+✅ Step 3: Create Apex Class
+Go to:
+
+Setup → Apex Classes → New
+
+Paste:
+
+public class EmployeeManagementSystem {
+
+    public static void insertEmployee() {
+        Employee__c e = new Employee__c(
+            Name = 'Rishi Patwa',
+            EmpID__c = 101,
+            Email__c = 'rishi@gmail.com',
+            BirthDate__c = Date.newInstance(2004,5,10),
+            Department__c = 'IT'
+        );
+        insert e;
+        System.debug('Employee Inserted');
+    }
+
+    public static void viewEmployees() {
+        List<Employee__c> listEmp = [
+            SELECT Name, EmpID__c, Email__c, BirthDate__c, Department__c
+            FROM Employee__c
+        ];
+
+        for(Employee__c e : listEmp) {
+            System.debug(e.Name + ' | ' + e.EmpID__c + ' | ' + e.Department__c);
+        }
+    }
+
+    public static void deleteEmployee() {
+        Employee__c e = [SELECT Id FROM Employee__c LIMIT 1];
+        delete e;
+        System.debug('Employee Deleted');
+    }
+
+    public static void menu(Integer choice) {
+
+        switch on choice {
+
+            when 1 {
+                insertEmployee();
+            }
+
+            when 2 {
+                viewEmployees();
+            }
+
+            when 3 {
+                deleteEmployee();
+            }
+
+            when else {
+                System.debug('Invalid Choice');
+            }
+        }
+    }
+}
+Click Save
+
+✅ Step 4: Run the Program
+Go to:
+
+Developer Console → Debug → Execute Anonymous
+
+Run:
+
+EmployeeManagementSystem.menu(1); // Insert
+EmployeeManagementSystem.menu(2); // View
+EmployeeManagementSystem.menu(3); // Delete
+
+✅ Correct Step 5: View Records (Using Query Editor)
+Steps:
+Open Developer Console
+
+Go to:
+
+Query Editor
+Write this query:
+
+SELECT Id, Name, EmpID__c, Email__c, BirthDate__c, Department__c
+FROM Employee__c
+Click:
+
+Execute
+✅ Output:
+Records will be displayed in table format
+
+This is better than logs for checking data
