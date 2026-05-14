@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            background-color: Black;
+        }
+
+        h2 {
+            color: Orange;
+        }
+
+        button {
+            background-color: blue;
+            color: white;
+        }
+
+        #result {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2>Employee Performance Expert System</h2>
+
+    <input type="text" id="name" placeholder="Employee Name"><br><br>
+
+    <input type="number" id="productivity" placeholder="Productivity (1-5)"><br><br>
+    <input type="number" id="quality" placeholder="Quality (1-5)"><br><br>
+    <input type="number" id="teamwork" placeholder="Teamwork (1-5)"><br><br>
+    <input type="number" id="attendance" placeholder="Attendance (1-5)"><br><br>
+    <input type="number" id="initiative" placeholder="Initiative (1-5)"><br><br>
+
+    <button onclick="evaluateEmployee()">Evaluate Performance</button>
+
+    <div id="result"></div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
