@@ -1,41 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>City Hospital</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Hospital Chatbot</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.5">
+
+    <style>
+        body{
+            background: lightblue;
+            margin: 0;
+        }
+
+        h1{
+            background: blue;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .content{
+            padding: 20px;
+        }
+
+        .chat-icon{
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: blue;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .chat-box{
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 250px;
+            max-height: 400px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        input{
+            width: 70%;
+        }
+    </style>
 </head>
+
 <body>
 
-    <header>
-        <h1>City Hospital</h1>
-        <p>Welcome to City Hospital Website</p>
-    </header>
+    <h1>City Hospital</h1>
 
-    <section class="content">
-        <h2>About Us</h2>
-        <p>We provide the best healthcare services.</p>
-    </section>
+    <div class="content">
+        <h3>About Us</h3>
+        <p>Healthcare services available.</p>
+    </div>
 
     <!-- Chat Button -->
-    <div class="chat-icon" onclick="openChat()">💬</div>
+    <div class="chat-icon" onclick="openChat()">
+        chat
+    </div>
 
-    <!-- Chat Window -->
-    <div class="chat-window" id="chatWindow">
-        <div class="chat-header">
-            Hospital Chatbot
-            <span onclick="closeChat()">✖</span>
+    <!-- Chat Box -->
+    <div class="chat-box" id="chatWindow">
+
+        <h3>
+            Chatbot
+            <span style="float:right;cursor:pointer;"
+            onclick="closeChat()">X</span>
+        </h3>
+
+        <div id="chatBody">
+            <p>
+                <b>Bot:</b> Hello User! I can help you with
+                Doctor, Appointment, Emergency, Timing,
+                Location and Fees.
+            </p>
         </div>
 
-        <div class="chat-body" id="chatBody">
-            <p><b>Bot:</b> I can help with Doctor, Appointment, Emergency, Timing, Location, Fees and Address. </p>
-        </div>
+        <input type="text" id="userInput">
+        <button onclick="sendMessage()">Send</button>
 
-        <div class="chat-footer">
-            <input type="text" id="userInput" placeholder="Ask here...">
-            <button onclick="sendMessage()">Send</button>
-        </div>
     </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
