@@ -1,0 +1,312 @@
+/*
+# Employee Management System
+
+## Step 1: Create Custom Object
+
+### 1. Employee (`Employee__c`)
+
+Fields:
+
+* **Employee Name** → Standard Name field
+* **EmpID__c** → Number (**Unique**)
+* **Email__c** → Email/Text
+* **Salary__c** → Currency
+* **Department__c** → Picklist
+* **JoiningDate__c** → Date
+
+---
+
+# Step 2: Validation Rules
+
+Go to:
+
+**Setup → Object Manager → Employee → Validation Rules → New**
+
+---
+
+# Employee Validation Rules
+
+## 1. Validate Employee Name
+
+### Formula
+
+```plaintext id="v1m8q"
+OR(
+   ISBLANK(Name),
+   LEN(Name) < 3
+)
+```
+
+### Error Message
+
+```plaintext id="x4p2n"
+Employee Name must contain at least 3 characters.
+```
+
+---
+
+## 2. Validate Employee ID
+
+### Formula
+
+```plaintext id="r7m5k"
+EmpID__c <= 0
+```
+
+### Error Message
+
+```plaintext id="n2v8x"
+Employee ID must be greater than 0.
+```
+
+### Unique Field Setting
+
+Go to:
+
+**Fields & Relationships → EmpID__c**
+
+Enable:
+
+```txt id="u6m1p"
+Unique
+```
+
+Click:
+
+```txt id="q3x9n"
+Save
+```
+
+---
+
+## 3. Validate Salary
+
+### Formula
+
+```plaintext id="j5m2r"
+OR(
+   Salary__c <= 10000,
+   Salary__c >= 500000
+)
+```
+
+### Error Message
+
+```plaintext id="f8p4k"
+Salary must be greater than 10,000 and less than 500,000.
+```
+
+---
+
+## 4. Validate Email
+
+### Formula
+
+```plaintext id="w9m3x"
+NOT(CONTAINS(Email__c, "@"))
+```
+
+### Error Message
+
+```plaintext id="c7p1n"
+Please enter a valid email address.
+```
+
+---
+
+## 5. Validate Department
+
+### Formula
+
+```plaintext id="t4m8q"
+ISPICKVAL(Department__c, "")
+```
+
+### Error Message
+
+```plaintext id="z2p6k"
+Please select a Department.
+```
+
+---
+
+## 6. Validate Joining Date
+
+### Formula
+
+```plaintext id="y5m1x"
+JoiningDate__c > TODAY()
+```
+
+### Error Message
+
+```plaintext id="p8v3n"
+Joining Date cannot be a future date.
+```
+
+---
+
+# Step 3: Create Visualforce Page
+
+Go to:
+
+**Setup → Visualforce Pages → New**
+
+Enable:
+
+* **Available for Lightning Experience**
+* **Experience Builder Sites**
+* **Mobile App**
+
+---
+
+## EmployeeRegistration Page
+
+```xml id="m7q2x"
+<apex:page standardController="Employee__c" lightningStylesheets="true">
+
+    <apex:form>
+
+        <apex:pageMessages/>
+
+        <apex:pageBlock title="Employee Registration">
+
+            <apex:pageBlockSection columns="2">
+
+                <apex:inputField value="{!Employee__c.Name}"/>
+
+                <apex:inputField value="{!Employee__c.EmpID__c}"/>
+
+                <apex:inputField value="{!Employee__c.Email__c}"/>
+
+                <apex:inputField value="{!Employee__c.Salary__c}"/>
+
+                <apex:inputField value="{!Employee__c.Department__c}"/>
+
+                <apex:inputField value="{!Employee__c.JoiningDate__c}"/>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockButtons>
+
+                <apex:commandButton value="Save"
+                                    action="{!save}"/>
+
+                <apex:commandButton value="Cancel"
+                                    action="{!cancel}"/>
+
+            </apex:pageBlockButtons>
+
+        </apex:pageBlock>
+
+    </apex:form>
+
+</apex:page>
+```
+
+---
+
+# Step 4: Create Visualforce Tab
+
+Visualforce pages cannot directly appear in navigation bar unless tabs are created.
+
+Go to:
+
+**Setup → Tabs**
+
+Scroll down to:
+
+**Visualforce Tabs → New**
+
+---
+
+## Create Employee Registration Tab
+
+1. Select **EmployeeRegistration** page.
+
+2. Enter:
+
+   * **Tab Label:** Register Employee
+   * **Tab Name:** Register_Employee
+
+3. Choose suitable tab style/icon.
+
+4. Click **Next**.
+
+5. Keep profile visibility default.
+
+6. Click:
+
+```txt id="a1m9q"
+Save
+```
+
+---
+
+# Step 5: Create Lightning App
+
+Go to:
+
+**Setup → App Manager → New Lightning App**
+
+---
+
+## Configure App
+
+* **App Name:** Employee Management
+
+Click:
+
+```txt id="k6p2x"
+Next
+```
+
+---
+
+## Navigation Items
+
+Add:
+
+```txt id="u8m4n"
+Register Employee
+```
+
+Move from:
+
+* Available Items
+  to:
+* Selected Items
+
+---
+
+## User Profiles
+
+Assign:
+
+```txt id="r3v7k"
+System Administrator
+```
+
+Click:
+
+```txt id="f5m1q"
+Save & Finish
+```
+
+---
+
+# Step 6: Open App
+
+Click:
+
+```txt id="n9p2x"
+App Launcher (9 dots)
+```
+
+Search:
+
+```txt id="y4m8k"
+Employee Management
+```
+
+Open app and test validations.
