@@ -33,7 +33,7 @@ void AStar(vector<vector<int>>& grid, pair<int,int> s, pair<int,int> g) {
         pq.pop();
 
         if (make_pair(x, y) == g) {
-            cout << "Path:\n";
+            cout << "\n\n Path: ";
             vector<pair<int,int>> path;
 
             while (make_pair(x, y) != s) {
@@ -45,6 +45,8 @@ void AStar(vector<vector<int>>& grid, pair<int,int> s, pair<int,int> g) {
 
             for (auto p : path)
                 cout << "(" << p.first << "," << p.second << ") ";
+
+            cout << endl << endl;
 
             return;
         }
@@ -59,7 +61,14 @@ void AStar(vector<vector<int>>& grid, pair<int,int> s, pair<int,int> g) {
                     cost[nx][ny] = newCost;
                     parent[nx][ny] = {x, y};
 
-                    int fVal = newCost + h(nx, ny, g.first, g.second);
+                    int hVal = h(nx, ny, g.first, g.second);
+                    int fVal = newCost + hVal;
+
+                    cout << "\n Node: (" << nx << "," << ny << ") ";
+                    cout << "\n g(n)=" << newCost << " ";
+                    cout << "\n h(n)=" << hVal << " ";
+                    cout << "\n f(n)=" << fVal << endl;
+
                     pq.push({fVal, nx, ny});
                 }
             }
