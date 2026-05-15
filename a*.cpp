@@ -32,7 +32,7 @@ void AStar(vector<vector<int>> &grid, pair<int, int> s, pair<int, int> g) {
     auto [f, x, y] = pq.top();
     pq.pop();
 
-    if (make_pair(x, y) == g) {
+    if (x==g.first && y==g.second) {
       cout << "\n\n Path: ";
       vector<pair<int, int>> path;
 
