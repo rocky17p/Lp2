@@ -16,7 +16,10 @@ bool valid(int x, int y, vector<vector<int>>& g) {
 }
 
 void AStar(vector<vector<int>>& grid, pair<int,int> s, pair<int,int> g) {
-
+    if (grid[s.first][s.second] == 1 || grid[g.first][g.second] == 1) {
+        cout << "Start or Goal is blocked\n";
+        return;
+    }
     int n = grid.size(), m = grid[0].size();
 
     vector<vector<int>> cost(n, vector<int>(m, INT_MAX));
@@ -80,7 +83,7 @@ void AStar(vector<vector<int>>& grid, pair<int,int> s, pair<int,int> g) {
 
 int main() {
     vector<vector<int>> grid = {
-        {0, 0, 0, 0},
+        {1, 0, 0, 0},
         {0, 1, 1, 0},
         {0, 1, 0, 0},
         {0, 0, 0, 0}
